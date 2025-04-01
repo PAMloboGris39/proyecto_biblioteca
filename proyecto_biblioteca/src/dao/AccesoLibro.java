@@ -130,7 +130,7 @@ public class AccesoLibro {
         }
     }
     public static void consultarLibrosNoPrestados() {
-        String sql = "SELECT * FROM libro WHERE codigo NOT IN (SELECT libro_codigo FROM prestamo)";
+        String sql = "SELECT * FROM libro WHERE codigo NOT IN (SELECT codigo_libro FROM prestamo)";
         
         try (Connection conn = ConfigSQLite.abrirConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -163,7 +163,7 @@ public class AccesoLibro {
     }
     public static void consultarLibrosDevueltosPorFecha() {
         String fechaDevolucion = Teclado.leerCadena("Ingrese la fecha de devolución (YYYY-MM-DD): ");
-        String sql = "SELECT libro.* FROM libro INNER JOIN prestamo ON libro.codigo = prestamo.libro_codigo WHERE prestamo.fecha_devolucion = ?";
+        String sql = "SELECT libro.* FROM libro INNER JOIN prestamo ON libro.codigo = prestamo.codigo_libro WHERE prestamo.fecha_devolucion = ?";
         
         try (Connection conn = ConfigSQLite.abrirConexion();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -214,7 +214,7 @@ public class AccesoLibro {
             System.out.print("Ingrese una opción: ");
             
             try {
-                opcion = Teclado.leerEntero("Elije una opcion");
+                opcion = Teclado.leerEntero("");
                 
                 switch (opcion) {
                     case 1:
