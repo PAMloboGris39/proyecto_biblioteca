@@ -129,35 +129,148 @@ public class AccesoLibro {
             System.out.println("Error al consultar los libros: " + e.getMessage());
         }
     }
+    public static void consultarLibrosNoPrestados() {
+        String sql = "SELECT * FROM libro WHERE codigo NOT IN (SELECT libro_codigo FROM prestamo)";
+        
+        try (Connection conn = ConfigSQLite.abrirConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            
+            List<Libro> listaLibros = new ArrayList<>();
+            
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String isbn = rs.getString("isbn");
+                String titulo = rs.getString("titulo");
+                String escritor = rs.getString("escritor");
+                int añoPublicacion = rs.getInt("año_publicacion");
+                double puntuacion = rs.getDouble("puntuacion");
+                listaLibros.add(new Libro(codigo, isbn, titulo, escritor, añoPublicacion, puntuacion));
+            }
+            
+            if (listaLibros.isEmpty()) {
+                System.out.println("No existe ningún libro no prestado en la base de datos.");
+            } else {
+                for (Libro libro : listaLibros) {
+                    System.out.println(libro);
+                }
+                System.out.println("Número total de libros no prestados: " + listaLibros.size());
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al consultar los libros no prestados: " + e.getMessage());
+        }
+    }
+    public static void consultarLibrosDevueltosPorFecha() {
+        String fechaDevolucion = Teclado.leerCadena("Ingrese la fecha de devolución (YYYY-MM-DD): ");
+        String sql = "SELECT libro.* FROM libro INNER JOIN prestamo ON libro.codigo = prestamo.libro_codigo WHERE prestamo.fecha_devolucion = ?";
+        
+        try (Connection conn = ConfigSQLite.abrirConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, fechaDevolucion);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                List<Libro> listaLibros = new ArrayList<>();
+                
+                while (rs.next()) {
+                    int codigo = rs.getInt("codigo");
+                    String isbn = rs.getString("isbn");
+                    String titulo = rs.getString("titulo");
+                    String escritor = rs.getString("escritor");
+                    int añoPublicacion = rs.getInt("año_publicacion");
+                    double puntuacion = rs.getDouble("puntuacion");
+                    listaLibros.add(new Libro(codigo, isbn, titulo, escritor, añoPublicacion, puntuacion));
+                }
+                
+                if (listaLibros.isEmpty()) {
+                    System.out.println("No existe ningún libro devuelto en esa fecha en la base de datos.");
+                } else {
+                    for (Libro libro : listaLibros) {
+                        System.out.println(libro);
+                    }
+                    System.out.println("Número total de libros devueltos en esa fecha: " + listaLibros.size());
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al consultar los libros devueltos: " + e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
-        while (true) {
-            System.out.println("Seleccione una opción:");
+       
+        int opcion;
+        
+        do {
+            System.out.println("\n--- MENÚ DE OPCIONES ---");
             System.out.println("1. Insertar libro");
             System.out.println("2. Eliminar libro");
-            System.out.println("3. Consultar libros");
+            System.out.println("3. Consultar todos los libros");
             System.out.println("4. Consultar libros por escritor");
-            System.out.println("5. Salir");
-            int opcion = Teclado.leerEntero("Ingrese su opción: ");
-            switch (opcion) {
-                case 1:
-                    insertarLibro();
-                    break;
-                case 2:
-                    eliminarLibro();
-                    break;
-                case 3:
-                    consultarLibros();
-                    break;
-                case 4:
-                	consultarLibrosPorEscritor();
-                	break;
-                case 5:
-                    System.out.println("Saliendo del programa...");
-                    System.exit(0);
-                default:
-                    System.out.println("Opción inválida, intente nuevamente.");
+            System.out.println("5. Consultar libros no prestados");
+            System.out.println("6. Consultar libros devueltos por fecha");
+            System.out.println("7. Salir");
+            System.out.print("Ingrese una opción: ");
+            
+            try {
+                opcion = Teclado.leerEntero("Elije una opcion");
+                
+                switch (opcion) {
+                    case 1:
+                        try {
+                            insertarLibro();
+                        } catch (Exception e) {
+                            System.out.println("Error al insertar libro: " + e.getMessage());
+                        }
+                        break;
+                    case 2:
+                        try {
+                            eliminarLibro();
+                        } catch (Exception e) {
+                            System.out.println("Error al eliminar libro: " + e.getMessage());
+                        }
+                        break;
+                    case 3:
+                        try {
+                            consultarLibros();
+                        } catch (Exception e) {
+                            System.out.println("Error al consultar libros: " + e.getMessage());
+                        }
+                        break;
+                    case 4:
+                        try {
+                            consultarLibrosPorEscritor();
+                        } catch (Exception e) {
+                            System.out.println("Error al consultar libros por escritor: " + e.getMessage());
+                        }
+                        break;
+                    case 5:
+                        try {
+                            consultarLibrosNoPrestados();
+                        } catch (Exception e) {
+                            System.out.println("Error al consultar libros no prestados: " + e.getMessage());
+                        }
+                        break;
+                    case 6:
+                        try {
+                            consultarLibrosDevueltosPorFecha();
+                        } catch (Exception e) {
+                            System.out.println("Error al consultar libros devueltos por fecha: " + e.getMessage());
+                        }
+                        break;
+                    case 7:
+                        System.out.println("Saliendo del programa...");
+                        break;
+                    default:
+                        System.out.println("Opción no válida. Intente nuevamente.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un número válido.");
+                opcion = 0; // Para evitar que termine el bucle inesperadamente
             }
-        }
+        } while (opcion != 7);
+        
+       
     }
 }
