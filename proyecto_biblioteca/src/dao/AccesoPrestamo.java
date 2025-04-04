@@ -8,7 +8,7 @@ import java.util.List;
 
 import Config.ConfigSQLite;
 import entrada.Teclado;
-import modelo.prestamo;
+import modelo.Prestamo;
 import modelo.probar;
 
 public class AccesoPrestamo {
@@ -170,10 +170,37 @@ public class AccesoPrestamo {
 		        System.out.println("Error al consultar los préstamos por fecha: " + e.getMessage());
 		    }
 		}
+=======
+>>>>>>> a2f76eb7629b4e47bee82385c1a9e65b032fdf53
 	 
+	/*public static void insertarPrestamo(int codigo_libro, int codigo_socio, String fecha_inicio, String fecha_devolución) {
+		Connection conexion =  null;
+		PreparedStatement ps = null;
+		
+		try {
+			
+			conexion = ConfigSQLite.abrirConexion();
+			String query = "INSERT INTO prestamo (codigo_libro, codigo_socio,)"
+		}
+		
+		finally {
+			try {
+				if(ps != null) {					
+					ps.close();
+				}
+				if(conexion != null) {					
+					ConfigSQLite.cerrarConexion(conexion);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}*/
 	
 	 
-	 
+	 /* MAIN PRUEBAS: 
 	 public static void actualizarPrestamo() {
 	        int codigoLibro = Teclado.leerEntero("Ingrese el código del libro: ");
 	        int codigoSocio = Teclado.leerEntero("Ingrese el código del socio: ");
@@ -240,6 +267,7 @@ public class AccesoPrestamo {
 
 	        } while (opcion != 0);
 	    }
+	    */
 	
 		
 }
