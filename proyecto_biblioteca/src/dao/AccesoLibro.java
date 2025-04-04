@@ -46,6 +46,7 @@ public class AccesoLibro {
     }
 
     // Eliminar un libro por código
+	/*
     public static void eliminarLibro() {
         int codigo = Teclado.leerEntero("Ingrese el código del libro a eliminar: ");
 
@@ -66,7 +67,7 @@ public class AccesoLibro {
             }
         }
     }
-
+	*/
     // Consultar todos los libros de la base de datos
     public static void consultarLibros() {
         String sql = "SELECT * FROM libro";
@@ -93,6 +94,48 @@ public class AccesoLibro {
             System.out.println("Error al consultar los libros: " + e.getMessage());
         }
     }
+    
+    public static void eliminarLibro() {
+        int codigo = Teclado.leerEntero("Ingrese el código del libro a eliminar: ");
+        
+        String consultaLibro = "SELECT codigo, titulo, año_Publicacion,escritor FROM libro WHERE codigo = ?";
+        String eliminarLibro = "DELETE FROM libro WHERE codigo = ?";
+        
+        try (Connection conn = ConfigSQLite.abrirConexion(); 
+             PreparedStatement pstmtConsulta = conn.prepareStatement(consultaLibro)) {
+            
+            pstmtConsulta.setInt(1, codigo);
+            try (ResultSet rs = pstmtConsulta.executeQuery()) {
+                if (rs.next()) {
+                    // Obtener y mostrar la información del libro antes de eliminarlo
+                    System.out.println("Información del libro a eliminar:");
+                    System.out.println("Código: " + rs.getInt("codigo"));
+                    System.out.println("Título: " + rs.getString("titulo"));
+                    System.out.println("escritor: " + rs.getString("escritor"));
+                    System.out.println("Año de publicación: " + rs.getInt("año_Publicacion"));
+                    
+                    // Proceder con la eliminación
+                    try (PreparedStatement pstmtEliminar = conn.prepareStatement(eliminarLibro)) {
+                        pstmtEliminar.setInt(1, codigo);
+                        int filasAfectadas = pstmtEliminar.executeUpdate();
+                        if (filasAfectadas > 0) {
+                            System.out.println("Se ha eliminado el libro de la base de datos.");
+                        }
+                    }
+                } else {
+                    System.out.println("No existe ningún libro con ese código en la base de datos.");
+                }
+            }
+        } catch (SQLException e) {
+            if (e.getMessage().contains("foreign key")) {
+                System.out.println("El libro está referenciado en un préstamo de la base de datos.");
+            } else {
+                System.out.println("Error al eliminar el libro: " + e.getMessage());
+            }
+        }
+    }
+
+        
     public static void consultarLibrosPorEscritor() {
         String escritor = Teclado.leerCadena("Ingrese el nombre del escritor: ");
         
@@ -105,7 +148,7 @@ public class AccesoLibro {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 List<Libro> listaLibros = new ArrayList<>();
-                
+               
                 while (rs.next()) {
                     int codigo = rs.getInt("codigo");
                     String isbn = rs.getString("isbn");
@@ -156,6 +199,7 @@ public class AccesoLibro {
                 }
                 System.out.println("Número total de libros no prestados: " + listaLibros.size());
             }
+
             
         } catch (SQLException e) {
             System.out.println("Error al consultar los libros no prestados: " + e.getMessage());
@@ -197,7 +241,7 @@ public class AccesoLibro {
             System.out.println("Error al consultar los libros devueltos: " + e.getMessage());
         }
     }
-
+    
     public static void main(String[] args) {
        
         int opcion;
@@ -273,4 +317,5 @@ public class AccesoLibro {
         
        
     }
+    
 }
