@@ -1,7 +1,7 @@
 package modelo;
 
 public class prestamo {
-	 private int codigoLibro;
+	 	private int codigoLibro;
 	    private int codigoSocio;
 	    private String fechaInicio;
 	    private String fechaFin;
