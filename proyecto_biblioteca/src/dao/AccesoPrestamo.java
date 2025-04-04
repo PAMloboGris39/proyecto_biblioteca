@@ -8,12 +8,36 @@ import java.util.List;
 
 import Config.ConfigSQLite;
 import entrada.Teclado;
-import modelo.prestamo;
+import modelo.Prestamo;
 import modelo.probar;
 
 public class AccesoPrestamo {
 	 
+	/*public static void insertarPrestamo(int codigo_libro, int codigo_socio, String fecha_inicio, String fecha_devolución) {
+		Connection conexion =  null;
+		PreparedStatement ps = null;
 		
+		try {
+			
+			conexion = ConfigSQLite.abrirConexion();
+			String query = "INSERT INTO prestamo (codigo_libro, codigo_socio,)"
+		}
+		
+		finally {
+			try {
+				if(ps != null) {					
+					ps.close();
+				}
+				if(conexion != null) {					
+					ConfigSQLite.cerrarConexion(conexion);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}*/
 	
 	 
 	 /* MAIN PRUEBAS: 

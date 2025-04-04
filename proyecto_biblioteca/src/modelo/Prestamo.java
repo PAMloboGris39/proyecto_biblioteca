@@ -1,13 +1,13 @@
 package modelo;
 
-public class prestamo {
+public class Prestamo {
 	 	private int codigoLibro;
 	    private int codigoSocio;
 	    private String fechaInicio;
 	    private String fechaFin;
 	    private String fechaDevolucion;
 
-	    public prestamo(int codigoLibro, int codigoSocio, String fechaInicio, String fechaFin, String fechaDevolucion) {
+	    public Prestamo(int codigoLibro, int codigoSocio, String fechaInicio, String fechaFin, String fechaDevolucion) {
 	        this.codigoLibro = codigoLibro;
 	        this.codigoSocio = codigoSocio;
 	        this.fechaInicio = fechaInicio;
