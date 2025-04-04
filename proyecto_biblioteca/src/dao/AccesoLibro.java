@@ -241,6 +241,26 @@ public class AccesoLibro {
             System.out.println("Error al consultar los libros devueltos: " + e.getMessage());
         }
     }
+    /*
+    public static void consultarLibrounico() {
+    	
+    	String sql = "SELECT * FROM libro";
+        try (Connection conn = ConfigSQLite.abrirConexion(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        
+            while (rs.next()) {
+                int codigo = rs.getInt("codigo");
+                String isbn = rs.getString("isbn");
+                String titulo = rs.getString("titulo");
+                String escritor = rs.getString("escritor");
+                int añoPublicacion = rs.getInt("año_publicacion");
+                double puntuacion = rs.getDouble("puntuacion");
+                new Libro(codigo, isbn, titulo, escritor, añoPublicacion, puntuacion);
+            }
+    	
+    	
+        }
+    	
+    }*/
     
     public static void main(String[] args) {
        

@@ -111,7 +111,7 @@ public class AccesoPrestamo {
 
 		    	List<prestamo> prestamosNoDevueltos = new ArrayList<>();
 	            while (rs.next()) {
-	                listaPrestamos.add(new prestamo(
+	                prestamosNoDevueltos.add(new prestamo(
 	                    rs.getInt("codigo_libro"),
 	                    rs.getInt("codigo_socio"),
 	                    rs.getString("fecha_inicio"),
@@ -119,7 +119,7 @@ public class AccesoPrestamo {
 	                    rs.getString("fecha_devolucion")
 	                ));
 	            }
-
+	            
 		        if (prestamosNoDevueltos.isEmpty()) {
 		            System.out.println("No existe ningún préstamo no devuelto en la base de datos.");
 		        } else {
