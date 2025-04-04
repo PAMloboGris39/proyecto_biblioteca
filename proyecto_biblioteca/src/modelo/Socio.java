@@ -8,7 +8,6 @@ public class Socio {
 	private String domicilio;
 	private String telefono;
 	private String correo;
-	private boolean tieneLibroPrestado;
 	
 	public Socio(int codigo, String dni, String nombre, String domicilio, String telefono, String correo) {
 		super();
@@ -18,7 +17,6 @@ public class Socio {
 		this.domicilio = domicilio;
 		this.telefono = telefono;
 		this.correo = correo;
-		tieneLibroPrestado = false;
 	}
 
 	public int getCodigo() {
@@ -68,14 +66,5 @@ public class Socio {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-
-	public boolean isLibroPrestado() {
-		return tieneLibroPrestado;
-	}
-
-	public void setLibroPrestado(boolean libroPrestado) {
-		this.tieneLibroPrestado = libroPrestado;
-	}
-	
 	
 }
